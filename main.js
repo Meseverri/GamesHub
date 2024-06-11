@@ -7,4 +7,3 @@ const app$$=document.querySelector("#app");
 
 
 app$$.appendChild(init());
-TTTgame();

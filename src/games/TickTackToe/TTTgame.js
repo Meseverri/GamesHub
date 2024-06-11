@@ -11,10 +11,11 @@ export const TTTgame = () => {
 
   app$$.append(icon$$);
   const section$$ = document.createElement("section");
-  const scoreObj={
-    "X":0,
-    "O":0
-  }
+  const scoreObj = {
+    updated: false,
+    X: 0,
+    O: 0,
+  };
   section$$.append(TTTscore());
   const turno$$ = document.createElement("p");
   turno$$.classList.add("turnTxt");
@@ -24,7 +25,7 @@ export const TTTgame = () => {
   const boardDiv$$ = document.createElement("div");
   boardDiv$$.classList.add("tableroContenedor");
 
-  boardDiv$$.append(TTTboard(9,scoreObj));
+  boardDiv$$.append(TTTboard(9, scoreObj));
   section$$.append(boardDiv$$);
 
   const reiniciar$$ = document.createElement("p");
@@ -35,20 +36,21 @@ export const TTTgame = () => {
     const turnTxt = document.querySelector("p>.turn");
     turnTxt.innerText = "X";
     tablero.childNodes[0].remove();
-    tablero.append(TTTboard(9,scoreObj));
+    tablero.append(TTTboard(9, scoreObj));
+    scoreObj.updated = false;
   });
   section$$.append(reiniciar$$);
 
   app$$.append(section$$);
 };
 
-const TTTboard = (dim,scoreObj) => {
-
+const TTTboard = (dim, scoreObj) => {
   const tablero = document.createElement("div");
   tablero.classList.add("tablero");
   let vertical = 0;
   let horizontal = 0;
   let turn = 0;
+  let winnerScoreopdated = false;
   for (let i = 0; i < dim; i++) {
     const casilla = document.createElement("div");
     casilla.classList.add("casilla");
@@ -64,28 +66,31 @@ const TTTboard = (dim,scoreObj) => {
       const txt = document.querySelector(".turnTxt");
       const turnTxt = document.querySelector("p>.turn");
 
-      if (turn === 1) {
-        const target = event.target.innerText;
-        if (!target) {
-          turn = 0;
-          // turnTxt.innerText="X"
-          event.target.innerText = "O";
-          txt.innerHTML = `Turno de <strong class="turn">X</strong>`;
-        }
-      } else {
-        const target = event.target.innerText;
-        if (!target) {
-          turn = 1;
-          turnTxt.innerText = "O";
-          event.target.innerText = "X";
-          txt.innerHTML = `Turno de <strong class="turn">O</strong>`;
+      if (!scoreObj.updated) {
+        if (turn === 1) {
+          const target = event.target.innerText;
+          if (!target) {
+            turn = 0;
+            // turnTxt.innerText="X"
+            event.target.innerText = "O";
+            txt.innerHTML = `Turno de <strong class="turn">X</strong>`;
+          }
+        } else {
+          const target = event.target.innerText;
+          if (!target) {
+            turn = 1;
+            turnTxt.innerText = "O";
+            event.target.innerText = "X";
+            txt.innerHTML = `Turno de <strong class="turn">O</strong>`;
+          }
         }
       }
       const winner = validarGanador(tablero);
-      if (winner) {
+      if (winner && !scoreObj.updated) {
+        scoreObj.updated = true;
         console.log(winner);
-        scoreObj[winner]+=1
-        score(winner,scoreObj[winner])
+        scoreObj[winner] += 1;
+        score(winner, scoreObj[winner]);
         txt.innerHTML = `¡Ganador de la partida <strong class="turn">${winner}</strong>!`;
       }
     });
@@ -107,7 +112,6 @@ const TTTscore = () => {
 };
 
 const score = (txt, score) => {
-  
   const scoreCreated$$ = document.querySelector(`.${txt}Score`);
   if (!scoreCreated$$) {
     const score$$ = document.createElement("div");
@@ -123,12 +127,10 @@ const score = (txt, score) => {
     score$$.appendChild(p);
     score$$.appendChild(scoreP$$);
     return score$$;
-  }else{
-    console.log()
+  } else {
+    console.log();
     scoreCreated$$.innerText = score;
   }
-
-  
 };
 
 const validarGanador = (tablero) => {
