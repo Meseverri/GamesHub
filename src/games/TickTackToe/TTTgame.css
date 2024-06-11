@@ -1,0 +1,89 @@
+@import "../../../style.css";
+
+section{
+    width:85vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tablero {
+    width: 300px;
+    height: 300px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0px;
+}
+
+.casilla {
+    /* Ajusta al tamaño deseado */
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    
+}
+
+.scoreBoard{
+    padding-top: 20px;
+    width:100%;
+    display: flex;
+    /* flex-wrap: wrap; */
+    justify-content: space-around;
+}
+.scoreBoard>div{
+
+    width:100%;
+    display: flex;
+    justify-content: space-around;
+    border: 2px solid var(--TTTcolor);
+    margin:5px 5px 20px 10px;
+    
+}
+.tablero .casilla:nth-child(1) {
+    border-right: 2px solid var(--TTTcolor);
+    border-bottom: 2px solid var(--TTTcolor);
+
+}
+
+.tablero .casilla:nth-child(2) {
+    border-right: 1px solid var(--TTTcolor);
+    border-bottom: 2px solid var(--TTTcolor);
+    border-left: 1px solid var(--TTTcolor);
+}
+.tablero .casilla:nth-child(3) {
+    border-bottom: 2px solid var(--TTTcolor);
+    border-left: 1px solid var(--TTTcolor);
+}
+.tablero .casilla:nth-child(4) {
+    border-right: 2px solid var(--TTTcolor);
+    border-bottom: 1px solid var(--TTTcolor);
+    border-top: 1px solid var(--TTTcolor);
+}
+.tablero .casilla:nth-child(5) {
+    border-right: 1px solid var(--TTTcolor);
+    border-bottom: 1px solid var(--TTTcolor);
+    border-top: 1px solid var(--TTTcolor);
+    border-left: 1px solid var(--TTTcolor);
+}
+.tablero .casilla:nth-child(6) {
+    border-bottom: 1px solid var(--TTTcolor);
+    border-top: 1px solid var(--TTTcolor);
+    border-left: 1px solid var(--TTTcolor);
+}
+.tablero .casilla:nth-child(7) {
+    border-right: 2px solid var(--TTTcolor);
+    border-top: 1px solid var(--TTTcolor);
+}
+.tablero .casilla:nth-child(8) {
+    border-right: 1px solid var(--TTTcolor);
+    border-top: 1px solid var(--TTTcolor);
+    border-left: 1px solid var(--TTTcolor);
+}
+.tablero .casilla:nth-child(9){
+    border-top: 1px solid var(--TTTcolor);
+    border-left: 1px solid var(--TTTcolor);
+}

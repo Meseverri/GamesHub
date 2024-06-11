@@ -1,0 +1,10 @@
+.gameCard{
+    text-align: center;
+}
+.gameCard>h3{
+    font-weight: normal;
+}
+
+.gameCard>h3:hover{
+    font-weight: bold;
+}

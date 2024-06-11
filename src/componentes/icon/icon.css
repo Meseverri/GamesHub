@@ -1,0 +1,21 @@
+.return-icon{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px; /* Cambia esto al tamaño que desees */
+    height: 50px; /* Cambia esto al tamaño que desees */
+    display :flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+}
+
+.return-icon>path{
+    position: relative;
+    display :flex;
+    justify-content: center;
+    align-items: center;
+    
+
+}
