@@ -1,77 +1,74 @@
 import { icon } from "../../componentes/icon/icon";
+import { scoreBoard,score } from "../../componentes/scoreBoard/scoreBoard";
 import { arrowNoFill } from "../../data/imgSrc";
 import { backInit } from "../../events/events";
 import "./TTTgame.css";
 
 export const TTTgame = () => {
+  //Back to main menu
   const app$$ = document.querySelector("#app");
   app$$.innerHTML = "";
   const icon$$ = icon("return-icon", arrowNoFill);
   icon$$.addEventListener("click", backInit);
-
   app$$.append(icon$$);
+  //Game section
   const section$$ = document.createElement("section");
+  
+  //Game section > score board
   const scoreObj = {
     updated: false,
     X: 0,
     O: 0,
   };
-  section$$.append(TTTscore());
+  
+  // section$$.append(TTTscore());
+  section$$.append(scoreBoard());
+  //Game section > turn to play and winner 
   const turno$$ = document.createElement("p");
   turno$$.classList.add("turnTxt");
   turno$$.innerHTML = `Turno de <strong class="turn">X</strong>`;
-
   section$$.append(turno$$);
+  //Game section> board container
   const boardDiv$$ = document.createElement("div");
   boardDiv$$.classList.add("tableroContenedor");
-
+  //Game section > board container > board
   boardDiv$$.append(TTTboard(9, scoreObj));
   section$$.append(boardDiv$$);
-
+  //Game section > reset board
   const reiniciar$$ = document.createElement("p");
-
   reiniciar$$.innerHTML = `<strong>Reiniciar partida</strong>`;
   reiniciar$$.addEventListener("click", () => {
     const tablero = document.querySelector(".tableroContenedor");
-    const turnTxt = document.querySelector("p>.turn");
-    turnTxt.innerText = "X";
+    turno$$.innerHTML = `Turno de <strong class="turn">X</strong>`;
     tablero.childNodes[0].remove();
+    //Game section > board container > board
     tablero.append(TTTboard(9, scoreObj));
     scoreObj.updated = false;
   });
-  section$$.append(reiniciar$$);
 
+  section$$.append(reiniciar$$);
   app$$.append(section$$);
 };
 
 const TTTboard = (dim, scoreObj) => {
+  //creating main container
   const tablero = document.createElement("div");
   tablero.classList.add("tablero");
   let vertical = 0;
   let horizontal = 0;
   let turn = 0;
-  let winnerScoreopdated = false;
   for (let i = 0; i < dim; i++) {
     const casilla = document.createElement("div");
     casilla.classList.add("casilla");
-    casilla.dataset.coordenada = `${vertical},${horizontal}`;
-
-    horizontal += 1;
-    if (horizontal === 3) {
-      horizontal = 0;
-      vertical += 1;
-    }
-
+    //Click event on board
     casilla.addEventListener("click", (event) => {
       const txt = document.querySelector(".turnTxt");
       const turnTxt = document.querySelector("p>.turn");
-
       if (!scoreObj.updated) {
         if (turn === 1) {
           const target = event.target.innerText;
           if (!target) {
             turn = 0;
-            // turnTxt.innerText="X"
             event.target.innerText = "O";
             txt.innerHTML = `Turno de <strong class="turn">X</strong>`;
           }
@@ -100,38 +97,7 @@ const TTTboard = (dim, scoreObj) => {
   return tablero;
 };
 
-const TTTscore = () => {
-  const scoreBoard = document.createElement("div");
-  scoreBoard.classList.add("scoreBoard");
-  const Xscore = score("X", "-");
-  const Oscore = score("O", "-");
 
-  scoreBoard.appendChild(Xscore);
-  scoreBoard.appendChild(Oscore);
-  return scoreBoard;
-};
-
-const score = (txt, score) => {
-  const scoreCreated$$ = document.querySelector(`.${txt}Score`);
-  if (!scoreCreated$$) {
-    const score$$ = document.createElement("div");
-    const p = document.createElement("p");
-    p.innerText = txt;
-    p.classList.add(txt);
-    //Score element p
-
-    const scoreP$$ = document.createElement("p");
-    scoreP$$.innerText = score;
-    scoreP$$.classList.add(`${txt}Score`);
-
-    score$$.appendChild(p);
-    score$$.appendChild(scoreP$$);
-    return score$$;
-  } else {
-    console.log();
-    scoreCreated$$.innerText = score;
-  }
-};
 
 const validarGanador = (tablero) => {
   // console.log(tablero)

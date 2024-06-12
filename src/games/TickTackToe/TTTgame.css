@@ -27,22 +27,6 @@ section{
     
 }
 
-.scoreBoard{
-    padding-top: 20px;
-    width:100%;
-    display: flex;
-    /* flex-wrap: wrap; */
-    justify-content: space-around;
-}
-.scoreBoard>div{
-
-    width:100%;
-    display: flex;
-    justify-content: space-around;
-    border: 2px solid var(--TTTcolor);
-    margin:5px 5px 20px 10px;
-    
-}
 .tablero .casilla:nth-child(1) {
     border-right: 2px solid var(--TTTcolor);
     border-bottom: 2px solid var(--TTTcolor);

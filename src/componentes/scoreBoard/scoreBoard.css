@@ -1,0 +1,15 @@
+.scoreBoard{
+    padding-top: 20px;
+    width:100%;
+    display: flex;
+    justify-content: space-around;
+}
+.scoreBoard>div{
+
+    width:100%;
+    display: flex;
+    justify-content: space-around;
+    border: 2px solid var(--TTTcolor);
+    margin:5px 5px 20px 10px;
+    
+}
