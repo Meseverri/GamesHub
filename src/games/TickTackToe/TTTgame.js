@@ -13,7 +13,7 @@ export const TTTgame = () => {
   app$$.append(icon$$);
   //Game section
   const section$$ = document.createElement("section");
-  
+  // section$$.classList.add("TTTsection")
   //Game section > score board
   const scoreObj = {
     updated: false,
@@ -54,8 +54,7 @@ const TTTboard = (dim, scoreObj) => {
   //creating main container
   const tablero = document.createElement("div");
   tablero.classList.add("tablero");
-  let vertical = 0;
-  let horizontal = 0;
+
   let turn = 0;
   for (let i = 0; i < dim; i++) {
     const casilla = document.createElement("div");

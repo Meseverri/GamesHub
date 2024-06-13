@@ -1,3 +1,4 @@
+import { camelCaseConverter } from "../../utils/usefullFunc";
 import "./scoreBoard.css";
  
 export const scoreBoard = (p1="X",p2="O",p1score="-",p2score="-") => {
@@ -13,18 +14,18 @@ export const scoreBoard = (p1="X",p2="O",p1score="-",p2score="-") => {
 };
 
 export const score = (txt, score) => {
-
-    const scoreCreated$$ = document.querySelector(`.${txt}Score`);
+    const CCtxt=camelCaseConverter(txt);
+    const scoreCreated$$ = document.querySelector(`.${CCtxt}Score`);
     if (!scoreCreated$$) {
       const score$$ = document.createElement("div");
       const p = document.createElement("p");
       p.innerText = txt;
-      p.classList.add(txt);
+      p.classList.add(CCtxt);
       //Score element p
   
       const scoreP$$ = document.createElement("p");
       scoreP$$.innerText = score;
-      scoreP$$.classList.add(`${txt}Score`);
+      scoreP$$.classList.add(`${CCtxt}Score`);
   
       score$$.appendChild(p);
       score$$.appendChild(scoreP$$);

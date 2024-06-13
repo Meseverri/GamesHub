@@ -1,0 +1,25 @@
+@import "../../../style.css";
+
+
+.mCard{
+    /* border: 2px solid var(--TTTcolor); */
+    width: 80px;
+    height: 80px;
+    background-color: var(--TTTcolor);
+
+}
+.tableroMemoria{
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 3px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.mCard>img{
+    width:100%;
+    aspect-ratio: 1;
+
+}
