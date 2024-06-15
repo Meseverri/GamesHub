@@ -28,17 +28,51 @@ const Mboard = (dim) => {
   const tablero = document.createElement("div");
   tablero.classList.add("tableroMemoria");
   const imgList = shuffle([...Mimages, ...Mimages]);
-  // console.log(imgList)
+  let clickCount=0;
+  const selectedList=[];
   for (let i = 0; i < dim; i++) {
     const casilla = document.createElement("div");
     casilla.classList.add("mCard");
     const img = document.createElement("img");
-    img.src = imgList[i];
+    img.id=`${imgList[i].id}${i}`;
+    casilla.id=i;
+    img.classList.add("noShow");
+    img.src = imgList[i].src;
     casilla.appendChild(img);
-    casilla.addEventListener("click", (event) => {});
+
+    casilla.addEventListener("click", (event) => {
+      // const 
+      const classValue=event.target.classList.value;
+      // let currentId;
+      /* este if es porque al convertir en show el taget idse convertia en imagen 
+        y el const selectedImg=event.target.childNodes[0];  */
+      if(classValue==="mCard"){
+        // currentId=event.target.id;
+        const selectedImg=event.target.childNodes[0];
+        selectedList.push(selectedImg.id)
+        selectedImg.classList.value="show";
+        clickCount+=1;
+      }
+
+      // console.log(clickCount)
+      if(clickCount===2){
+        console.log(selectedList)
+        const currentImg=document.getElementById(selectedList[selectedList.length-1]);
+        const prevImg=document.getElementById(selectedList[selectedList.length-2]);
+        console.log(`${currentImg}`);
+        console.log(`${currentImg}`);
+        clickCount=0;
+        console.log(currentImg.id[0])
+        console.log(prevImg.id[0])
+        if(currentImg.src===prevImg.src){
+        }else{
+          prevImg.classList.value="noShow"
+          currentImg.classList.value="noShow"
+        }
+      }
+    });
     tablero.appendChild(casilla);
   }
-
   return tablero;
 };
 

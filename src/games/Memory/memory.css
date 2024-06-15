@@ -3,8 +3,8 @@
 
 .mCard{
     /* border: 2px solid var(--TTTcolor); */
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     background-color: var(--TTTcolor);
 
 }
@@ -20,6 +20,9 @@
 
 .mCard>img{
     width:100%;
-    aspect-ratio: 1;
+    aspect-ratio: 1/1;
 
+}
+.mCard>.noShow{
+    display: none;
 }
