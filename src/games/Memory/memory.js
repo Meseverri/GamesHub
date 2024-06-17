@@ -28,49 +28,62 @@ const Mboard = (dim) => {
   const tablero = document.createElement("div");
   tablero.classList.add("tableroMemoria");
   const imgList = shuffle([...Mimages, ...Mimages]);
-  let clickCount=0;
-  const selectedList=[];
+  // Click count cuenta los clicks para poder validar y comparar imagenes 
+  let clickCount = 0;
+  //Selected list se almacenaran los ultimos dos elementos seleccionados por los jugadores
+  let selectedList = [];
+  /*notPlay es un booleano que permitira esperar a que se acabe el tiempo de visualizacion 
+  de las cartas para que no hayan mas de 3 casillas volteadas*/
+  let notPlay;
   for (let i = 0; i < dim; i++) {
     const casilla = document.createElement("div");
     casilla.classList.add("mCard");
+    casilla.id = i;
     const img = document.createElement("img");
-    img.id=`${imgList[i].id}${i}`;
-    casilla.id=i;
+    img.id = `${imgList[i].id}${i}`;
     img.classList.add("noShow");
     img.src = imgList[i].src;
     casilla.appendChild(img);
-
     casilla.addEventListener("click", (event) => {
-      // const 
-      const classValue=event.target.classList.value;
-      // let currentId;
-      /* este if es porque al convertir en show el taget idse convertia en imagen 
-        y el const selectedImg=event.target.childNodes[0];  */
-      if(classValue==="mCard"){
-        // currentId=event.target.id;
-        const selectedImg=event.target.childNodes[0];
-        selectedList.push(selectedImg.id)
-        selectedImg.classList.value="show";
-        clickCount+=1;
-      }
+      if (!notPlay) {
+        const classValue = event.target.classList.value;
+        
+        /* este if es porque al convertir en show el taget id convertia en imagen 
+        y el const selectedImg=event.target.childNodes[0]; debuelve un error
+        ademas asi nos aseguramos que este seleccionando una casilla volteada */
+        if (classValue === "mCard") {
+          // currentId=event.target.id;
+          const selectedImg = event.target.childNodes[0];
+          selectedList.push(selectedImg.id);
+          selectedImg.classList.value = "show";
+          clickCount += 1;
+          // notPlay = true;
+        };
 
-      // console.log(clickCount)
-      if(clickCount===2){
-        console.log(selectedList)
-        const currentImg=document.getElementById(selectedList[selectedList.length-1]);
-        const prevImg=document.getElementById(selectedList[selectedList.length-2]);
-        console.log(`${currentImg}`);
-        console.log(`${currentImg}`);
-        clickCount=0;
-        console.log(currentImg.id[0])
-        console.log(prevImg.id[0])
-        if(currentImg.src===prevImg.src){
-        }else{
-          prevImg.classList.value="noShow"
-          currentImg.classList.value="noShow"
+        if (clickCount === 2) {
+          clickCount = 0;
+          const currentImg = document.getElementById(
+            selectedList[selectedList.length - 1]
+          );
+          const prevImg = document.getElementById(
+            selectedList[selectedList.length - 2]
+          );
+          selectedList=selectedList.slice(selectedList.length - 2);
+          console.log(selectedList);
+          if (currentImg.id[0] !== prevImg.id[0]) {
+            notPlay = true;
+            setTimeout(function () {
+              // Your code here will run after a delay
+              prevImg.classList.value = "noShow";
+              currentImg.classList.value = "noShow";
+              notPlay = false;
+            }, 900);
+          } else {
+          }
         }
       }
     });
+
     tablero.appendChild(casilla);
   }
   return tablero;
