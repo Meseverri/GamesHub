@@ -22,7 +22,7 @@ export const score = (txt, score) => {
       p.innerText = txt;
       p.classList.add(CCtxt);
       //Score element p
-  
+
       const scoreP$$ = document.createElement("p");
       scoreP$$.innerText = score;
       scoreP$$.classList.add(`${CCtxt}Score`);
@@ -31,7 +31,6 @@ export const score = (txt, score) => {
       score$$.appendChild(scoreP$$);
       return score$$;
     } else {
-      console.log();
       scoreCreated$$.innerText = score;
     }
   };

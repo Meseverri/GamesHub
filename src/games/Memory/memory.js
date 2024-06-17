@@ -1,5 +1,5 @@
 import { icon } from "../../componentes/icon/icon";
-import { scoreBoard } from "../../componentes/scoreBoard/scoreBoard";
+import { score, scoreBoard } from "../../componentes/scoreBoard/scoreBoard";
 import { Mimages, arrowNoFill } from "../../data/imgSrc";
 import { backInit } from "../../events/events";
 import "./memory.css";
@@ -12,53 +12,79 @@ export const Mgame = () => {
   app$$.append(icon$$);
 
   const section$$ = document.createElement("section");
-
+  
+  //Game section > turn to play and winner 
+  const turno$$ = document.createElement("p");
+  turno$$.classList.add("turnTxt");
+  turno$$.innerHTML = `Turno de <strong class="turn">X</strong>`;
+  
   //Game section > score board
   const scoreObj = {
-    updated: false,
-    X: 0,
-    O: 0,
+    turn: "player1",
+    player1: 0,
+    player2: 0,
   };
-  section$$.append(scoreBoard("Player 1", "Player 2", "", ""));
-  section$$.append(Mboard(16));
+  const boardDiv$$ = document.createElement("div");
+  boardDiv$$.classList.add("tableroContenedor");
+  boardDiv$$.append(Mboard(16,scoreObj))
+
+  //Game section > reset board
+  const reiniciar$$ = document.createElement("p");
+  reiniciar$$.innerHTML = `<strong>Reiniciar partida</strong>`;
+  reiniciar$$.addEventListener("click", () => {
+    const tablero = document.querySelector(".tableroContenedor");
+    tablero.childNodes[0].remove();
+    //Game section > board container > board
+    tablero.append(Mboard(16,scoreObj));
+    scoreObj.turn = "player1";
+  });
+  
+  section$$.append(scoreBoard("Player 1", "Player 2", "-", "-"));
+  // section$$.append(turno$$);
+  section$$.append(boardDiv$$);
+  section$$.append(reiniciar$$);
   app$$.append(section$$);
 };
 
-const Mboard = (dim) => {
+const Mboard = (dim,scoreObj) => {
   const tablero = document.createElement("div");
   tablero.classList.add("tableroMemoria");
   const imgList = shuffle([...Mimages, ...Mimages]);
-  // Click count cuenta los clicks para poder validar y comparar imagenes 
+  // Click count cuenta los clicks para poder validar y comparar imagenes
   let clickCount = 0;
   //Selected list se almacenaran los ultimos dos elementos seleccionados por los jugadores
   let selectedList = [];
   /*notPlay es un booleano que permitira esperar a que se acabe el tiempo de visualizacion 
   de las cartas para que no hayan mas de 3 casillas volteadas*/
   let notPlay;
+  //object que contabiliza si se encuentra una imagen y quien se llevo el punto
   for (let i = 0; i < dim; i++) {
     const casilla = document.createElement("div");
     casilla.classList.add("mCard");
     casilla.id = i;
     const img = document.createElement("img");
+    /*id de la imagen tiene una letra asociada a la imagen y un numero
+     asociado a la casilla para que sea unico*/
     img.id = `${imgList[i].id}${i}`;
+    //por defecto no se mostrara
     img.classList.add("noShow");
     img.src = imgList[i].src;
+
     casilla.appendChild(img);
+    
     casilla.addEventListener("click", (event) => {
       if (!notPlay) {
         const classValue = event.target.classList.value;
-        
+
         /* este if es porque al convertir en show el taget id convertia en imagen 
         y el const selectedImg=event.target.childNodes[0]; debuelve un error
         ademas asi nos aseguramos que este seleccionando una casilla volteada */
         if (classValue === "mCard") {
-          // currentId=event.target.id;
           const selectedImg = event.target.childNodes[0];
           selectedList.push(selectedImg.id);
           selectedImg.classList.value = "show";
           clickCount += 1;
-          // notPlay = true;
-        };
+        }
 
         if (clickCount === 2) {
           clickCount = 0;
@@ -68,8 +94,8 @@ const Mboard = (dim) => {
           const prevImg = document.getElementById(
             selectedList[selectedList.length - 2]
           );
-          selectedList=selectedList.slice(selectedList.length - 2);
-          console.log(selectedList);
+          // restructuracion
+          selectedList = selectedList.slice(selectedList.length - 2);
           if (currentImg.id[0] !== prevImg.id[0]) {
             notPlay = true;
             setTimeout(function () {
@@ -78,7 +104,14 @@ const Mboard = (dim) => {
               currentImg.classList.value = "noShow";
               notPlay = false;
             }, 900);
+            scoreObj.turn=changeTurn(scoreObj.turn);
           } else {
+
+            scoreObj[scoreObj.turn]+=1;
+            score(scoreObj.turn,scoreObj[scoreObj.turn])
+            scoreObj.turn=changeTurn(scoreObj.turn);
+
+
           }
         }
       }
@@ -89,7 +122,7 @@ const Mboard = (dim) => {
   return tablero;
 };
 
-function shuffle(array) {
+const  shuffle=(array)=> {
   var currentIndex = array.length,
     temporaryValue,
     randomIndex;
@@ -106,4 +139,9 @@ function shuffle(array) {
   }
 
   return array;
+}
+const changeTurn =(val)=>{
+  let ret;
+  (val==="player1")? ret = "player2":ret="player1";
+  return ret;
 }
