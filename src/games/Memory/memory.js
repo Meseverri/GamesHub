@@ -2,6 +2,7 @@ import { icon } from "../../componentes/icon/icon";
 import { score, scoreBoard } from "../../componentes/scoreBoard/scoreBoard";
 import { Mimages, arrowNoFill } from "../../data/imgSrc";
 import { backInit } from "../../events/events";
+import { shuffle } from "../../utils/usefullFunc";
 import "./memory.css";
 
 export const Mgame = () => {
@@ -12,21 +13,19 @@ export const Mgame = () => {
   app$$.append(icon$$);
 
   const section$$ = document.createElement("section");
-  
-  //Game section > turn to play and winner 
-  const turno$$ = document.createElement("p");
-  turno$$.classList.add("turnTxt");
-  turno$$.innerHTML = `Turno de <strong class="turn">X</strong>`;
-  
-  //Game section > score board
+
   const scoreObj = {
     turn: "player1",
     player1: 0,
     player2: 0,
   };
+  //Game section > score board
+  section$$.append(scoreBoard("Player 1", "Player 2", "-", "-"));
+  //Game section > board
+
   const boardDiv$$ = document.createElement("div");
   boardDiv$$.classList.add("tableroContenedor");
-  boardDiv$$.append(Mboard(16,scoreObj))
+  boardDiv$$.append(Mboard(16, scoreObj));
 
   //Game section > reset board
   const reiniciar$$ = document.createElement("p");
@@ -35,18 +34,16 @@ export const Mgame = () => {
     const tablero = document.querySelector(".tableroContenedor");
     tablero.childNodes[0].remove();
     //Game section > board container > board
-    tablero.append(Mboard(16,scoreObj));
+    tablero.append(Mboard(16, scoreObj));
     scoreObj.turn = "player1";
   });
-  
-  section$$.append(scoreBoard("Player 1", "Player 2", "-", "-"));
-  // section$$.append(turno$$);
+
   section$$.append(boardDiv$$);
   section$$.append(reiniciar$$);
   app$$.append(section$$);
 };
 
-const Mboard = (dim,scoreObj) => {
+const Mboard = (dim, scoreObj) => {
   const tablero = document.createElement("div");
   tablero.classList.add("tableroMemoria");
   const imgList = shuffle([...Mimages, ...Mimages]);
@@ -71,7 +68,7 @@ const Mboard = (dim,scoreObj) => {
     img.src = imgList[i].src;
 
     casilla.appendChild(img);
-    
+
     casilla.addEventListener("click", (event) => {
       if (!notPlay) {
         const classValue = event.target.classList.value;
@@ -104,14 +101,11 @@ const Mboard = (dim,scoreObj) => {
               currentImg.classList.value = "noShow";
               notPlay = false;
             }, 900);
-            scoreObj.turn=changeTurn(scoreObj.turn);
+            scoreObj.turn = changeTurn(scoreObj.turn);
           } else {
-
-            scoreObj[scoreObj.turn]+=1;
-            score(scoreObj.turn,scoreObj[scoreObj.turn])
-            scoreObj.turn=changeTurn(scoreObj.turn);
-
-
+            scoreObj[scoreObj.turn] += 1;
+            score(scoreObj.turn, scoreObj[scoreObj.turn]);
+            scoreObj.turn = changeTurn(scoreObj.turn);
           }
         }
       }
@@ -122,26 +116,8 @@ const Mboard = (dim,scoreObj) => {
   return tablero;
 };
 
-const  shuffle=(array)=> {
-  var currentIndex = array.length,
-    temporaryValue,
-    randomIndex;
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
-const changeTurn =(val)=>{
+const changeTurn = (val) => {
   let ret;
-  (val==="player1")? ret = "player2":ret="player1";
+  val === "player1" ? (ret = "player2") : (ret = "player1");
   return ret;
-}
+};

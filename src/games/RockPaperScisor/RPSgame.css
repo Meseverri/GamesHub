@@ -1,0 +1,19 @@
+@import "../../../style.css";
+
+.RPSitem{
+  /* 
+  height: 30px; */
+  font-size: 56px;
+  border: 2px solid var(--TTTcolor);;
+  border-radius: 50%;
+  margin: 5px;
+} 
+.RPSitem:hover{
+  background-color: var(--TTTcolor);
+}
+.RPSselector{
+  display:flex;
+  justify-content: space-around;
+  font-size: 56px;
+
+}
