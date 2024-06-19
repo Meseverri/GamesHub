@@ -57,34 +57,46 @@ export const RPSgame = () => {
 
 const countdown = (userItem,randomItem) => {
   var count = 2;
-
+  const RPSselector=document.querySelector(".RPSselector");
   // Update the count down every 1 second
-  document.querySelector(".RPSselector").innerText = `${userItem.icon} ${count+1}`;
+  const countDiv=document.createElement("div");
+  countDiv.innerText=`${userItem.icon}:${count+1}`
+  RPSselector.innerText = ``;
+  RPSselector.appendChild(countDiv)
   var countdownfunction = setInterval(function () {
     // Display the result in an element with id="demo"
-    document.querySelector(".RPSselector").innerText = `${userItem.icon} ${count}`;
-
+    countDiv.innerText = `${userItem.icon}:${count}`;
     // Decrease the count by 1
     count--;
-
     // If the count down is finished, write some text
     if (count < 0) {
       clearInterval(countdownfunction);
       // Call your win or loss function here
-      var result = winOrLoss(); // Assume this is your function
+      var result = winOrLoss(userItem.name,randomItem.name); // Assume this is your function
       // document.querySelector(".RPSselector").innerHTML = result;
-      document.querySelector(".RPSselector").innerText = `${userItem.icon} ${randomItem.icon}`;
+      const resultContainer=document.createElement("div")
+      resultContainer.innerText=result
+      countDiv.innerText = `${userItem.icon} ${randomItem.icon}`;
+      RPSselector.appendChild(resultContainer)
     }
   }, 900);
 };
 
-// Example win or loss function
-function winOrLoss() {
-  // This is just a simple example, you can implement your own logic
-  var random = Math.random();
-  if (random < 0.5) {
-    return "Win!";
-  } else {
-    return "Loss!";
+
+function winOrLoss(user,computer) {
+  // var computerChoice = getComputerChoice();
+  
+  if(user === computer) {
+    return 'It\'s a draw!';
   }
+
+  if(
+    (user === 'rock' && computer === 'scissors') ||
+    (user === 'scissors' && computer === 'paper') ||
+    (user === 'paper' && computer === 'rock')
+  ) {
+    return 'You win!';
+  }
+
+  return 'You lose!';
 }
