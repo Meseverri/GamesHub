@@ -10,7 +10,7 @@ export const camelCaseConverter = (texto) => {
 };
 
 export const shuffle = (array) => {
-  var currentIndex = array.length,
+  let currentIndex = array.length,
     temporaryValue,
     randomIndex;
   // While there remain elements to shuffle...

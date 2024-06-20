@@ -1,5 +1,11 @@
 @import "../../../style.css";
 
+.scoreBoard{
+  width:100%
+}
+section{
+  width:80vw
+}
 .RPSitem{
   /* 
   height: 30px; */
@@ -14,6 +20,16 @@
 .RPSselector{
   display:flex;
   justify-content: space-around;
-  font-size: 56px;
+  align-items: center;
+  font-size: 80px;
+  width:100%
+
+
+}
+.RPSselector>div{
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 40px;
 
 }

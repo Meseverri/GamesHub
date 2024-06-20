@@ -3,32 +3,61 @@ import { init } from "../../init/initView";
 import { arrowNoFill } from "../../data/imgSrc";
 import { backInit } from "../../events/events";
 import "./RPSgame.css";
+import { score, scoreBoard } from "../../componentes/scoreBoard/scoreBoard";
 
 export const RPSgame = () => {
   const app$$ = document.querySelector("#app");
   app$$.innerHTML = "";
+  //return to main menu
   const icon$$ = icon("return-icon", arrowNoFill);
-
   icon$$.addEventListener("click", backInit);
   app$$.append(icon$$);
-
+  //Section creation
   const section$$ = document.createElement("section");
   const scoreObj = {
-    turn: "player1",
-    player1: 0,
-    player2: 0,
+    user: 0,
+    computer: 0,
   };
-
+  //section > score board
+  const score$$ = scoreBoard("User", "Computer", "", "");
   const items = [
     { name: "scissors", icon: "✌️" },
     { name: "paper", icon: "🖐️" },
     { name: "rock", icon: "✊" },
   ];
-  let randomItem = items[Math.floor(Math.random() * items.length)];
   //Game section > board
 
   const boardDiv$$ = document.createElement("div");
-  boardDiv$$.classList.add("RPSselector");
+  boardDiv$$.classList.add("tableroContenedor");
+  boardDiv$$.append(RPSboard(items, scoreObj));
+
+  // const boardDiv$$ = RPSboard(items, scoreObj);
+  const reiniciar$$ = document.createElement("p");
+  reiniciar$$.innerHTML = `<strong>Reiniciar partida</strong>`;
+  reiniciar$$.addEventListener("click", () => {
+    const tablero = document.querySelector(".tableroContenedor");
+    tablero.childNodes[0].remove();
+    //Game section > board container > board
+    tablero.append(RPSboard(items, scoreObj));
+  });
+
+  
+  // boardDiv$$.appendChild(board$$);
+  section$$.append(score$$);
+  section$$.append(boardDiv$$);
+  section$$.append(reiniciar$$);
+  app$$.append(section$$);
+};
+const RPSboard = (items, scoreObj) => {
+  let randomItem = items[Math.floor(Math.random() * items.length)];
+
+  let boardDiv = document.querySelector("RPSselector");
+  if (!boardDiv) {
+    boardDiv = document.createElement("div");
+    boardDiv.classList.add("RPSselector");
+  } else {
+    boardDiv.innerHTML = "";
+  }
 
   // const board$$ = document.createElement("div");
   // board$$.classList.add("RPSselector");
@@ -38,33 +67,25 @@ export const RPSgame = () => {
     item$$.classList.add(items[i].name);
     item$$.innerText = items[i].icon;
     item$$.addEventListener("click", (event) => {
-      // console.log(event.target)
-      console.log(items[i].name);
-      console.log(randomItem);
-      countdown(items[i],randomItem)
+      countdown(items[i], randomItem, scoreObj);
+      
       randomItem = items[Math.floor(Math.random() * items.length)].name;
     });
 
-    boardDiv$$.appendChild(item$$);
+    boardDiv.appendChild(item$$);
   }
-
-  // boardDiv$$.appendChild(board$$);
-
-  section$$.append(boardDiv$$);
-  app$$.append(section$$);
+  return boardDiv;
 };
-// Set the count down start
-
-const countdown = (userItem,randomItem) => {
+const countdown = (userItem, randomItem, scoreObj) => {
+  // Set the count down start
   var count = 2;
-  const RPSselector=document.querySelector(".RPSselector");
+  const RPSselector = document.querySelector(".RPSselector");
   // Update the count down every 1 second
-  const countDiv=document.createElement("div");
-  countDiv.innerText=`${userItem.icon}:${count+1}`
+  const countDiv = document.createElement("div");
+  countDiv.innerText = `${userItem.icon}:${count + 1}`;
   RPSselector.innerText = ``;
-  RPSselector.appendChild(countDiv)
+  RPSselector.appendChild(countDiv);
   var countdownfunction = setInterval(function () {
-    // Display the result in an element with id="demo"
     countDiv.innerText = `${userItem.icon}:${count}`;
     // Decrease the count by 1
     count--;
@@ -72,31 +93,38 @@ const countdown = (userItem,randomItem) => {
     if (count < 0) {
       clearInterval(countdownfunction);
       // Call your win or loss function here
-      var result = winOrLoss(userItem.name,randomItem.name); // Assume this is your function
+      var result = winOrLoss(userItem.name, randomItem.name); // Assume this is your function
       // document.querySelector(".RPSselector").innerHTML = result;
-      const resultContainer=document.createElement("div")
-      resultContainer.innerText=result
+      const resultContainer = document.createElement("div");
+      resultContainer.innerText = result;
+      if (result === "You win!") {
+        scoreObj.user++;
+        score("user", scoreObj.user);
+      }
+      if (result === "You lose!") {
+        scoreObj.computer++;
+        score("computer", scoreObj.computer);
+      }
       countDiv.innerText = `${userItem.icon} ${randomItem.icon}`;
-      RPSselector.appendChild(resultContainer)
+      RPSselector.appendChild(resultContainer);
     }
   }, 900);
 };
 
-
-function winOrLoss(user,computer) {
+const  winOrLoss=(user, computer)=> {
   // var computerChoice = getComputerChoice();
-  
-  if(user === computer) {
-    return 'It\'s a draw!';
+  let retobject = {};
+  if (user === computer) {
+    return "It's a draw!";
   }
 
-  if(
-    (user === 'rock' && computer === 'scissors') ||
-    (user === 'scissors' && computer === 'paper') ||
-    (user === 'paper' && computer === 'rock')
+  if (
+    (user === "rock" && computer === "scissors") ||
+    (user === "scissors" && computer === "paper") ||
+    (user === "paper" && computer === "rock")
   ) {
-    return 'You win!';
+    return "You win!";
   }
 
-  return 'You lose!';
+  return "You lose!";
 }
