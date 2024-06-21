@@ -4,7 +4,8 @@ import { arrowNoFill } from "../../data/imgSrc";
 import { backInit } from "../../events/events";
 import "./RPSgame.css";
 import { score, scoreBoard } from "../../componentes/scoreBoard/scoreBoard";
-
+import { localStorageParser } from "../../utils/usefullFunc";
+//Rock paper Scisor game
 export const RPSgame = () => {
   const app$$ = document.querySelector("#app");
   app$$.innerHTML = "";
@@ -14,12 +15,17 @@ export const RPSgame = () => {
   app$$.append(icon$$);
   //Section creation
   const section$$ = document.createElement("section");
-  const scoreObj = {
+  const scoreObj = 
+  localStorageParser("RPSScore", {
+    user: 0,
+    computer: 0,
+  }) || {
     user: 0,
     computer: 0,
   };
+
   //section > score board
-  const score$$ = scoreBoard("User", "Computer", "", "");
+  const score$$ = scoreBoard("User", "Computer", scoreObj.user, scoreObj.computer);
   const items = [
     { name: "scissors", icon: "✌️" },
     { name: "paper", icon: "🖐️" },
@@ -100,10 +106,12 @@ const countdown = (userItem, randomItem, scoreObj) => {
       resultContainer.innerText = result;
       if (result === "You win!") {
         scoreObj.user++;
+        localStorage.setItem("RPSScore",JSON.stringify(scoreObj));
         score("user", scoreObj.user);
       }
       if (result === "You lose!") {
         scoreObj.computer++;
+        localStorage.setItem("RPSScore",JSON.stringify(scoreObj));
         score("computer", scoreObj.computer);
       }
       countDiv.innerText = `${userItem.icon} ${randomItem.icon}`;

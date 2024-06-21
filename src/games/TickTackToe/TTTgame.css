@@ -1,12 +1,6 @@
 @import "../../../style.css";
 
-section{
-    width:85vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+
 
 .tablero {
     width: 300px;
