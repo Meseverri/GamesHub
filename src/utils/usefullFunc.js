@@ -27,3 +27,9 @@ export const shuffle = (array) => {
 
   return array;
 };
+
+export const localStorageParser=(name,obj)=>{
+  const objStored=JSON.parse(localStorage.getItem(name)) ||
+  localStorage.setItem(name, JSON.stringify(obj));
+  return objStored
+}

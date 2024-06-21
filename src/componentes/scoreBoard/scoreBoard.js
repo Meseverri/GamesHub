@@ -5,8 +5,8 @@ export const scoreBoard = (p1="X",p2="O",p1score="-",p2score="-") => {
   const scoreBoard = document.createElement("div");
 
   scoreBoard.classList.add("scoreBoard");
-  const Xscore = score(p1, p1score);
-  const Oscore = score(p2, p2score);
+  const Xscore =p1score===0? score(p1, "-"):score(p1, p1score);
+  const Oscore = p2score===0? score(p2, "-"):score(p2, p2score);
 
   scoreBoard.appendChild(Xscore);
   scoreBoard.appendChild(Oscore);

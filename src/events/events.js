@@ -5,6 +5,3 @@ export const backInit = ()=>{
     app$$.appendChild(init());
 };
 
-export const backInitHover=()=>{
-    
-}

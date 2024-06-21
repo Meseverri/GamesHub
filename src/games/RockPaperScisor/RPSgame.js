@@ -48,6 +48,7 @@ export const RPSgame = () => {
   section$$.append(reiniciar$$);
   app$$.append(section$$);
 };
+
 const RPSboard = (items, scoreObj) => {
   let randomItem = items[Math.floor(Math.random() * items.length)];
 

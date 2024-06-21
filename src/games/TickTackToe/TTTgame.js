@@ -1,7 +1,8 @@
 import { icon } from "../../componentes/icon/icon";
-import { scoreBoard,score } from "../../componentes/scoreBoard/scoreBoard";
+import { scoreBoard, score } from "../../componentes/scoreBoard/scoreBoard";
 import { arrowNoFill } from "../../data/imgSrc";
 import { backInit } from "../../events/events";
+import { localStorageParser } from "../../utils/usefullFunc";
 import "./TTTgame.css";
 
 export const TTTgame = () => {
@@ -15,15 +16,18 @@ export const TTTgame = () => {
   const section$$ = document.createElement("section");
   // section$$.classList.add("TTTsection")
   //Game section > score board
-  const scoreObj = {
+  const scoreObj = localStorageParser("TTTScore", {
+    updated: false,
+    X: 0,
+    O: 0,
+  }) || {
     updated: false,
     X: 0,
     O: 0,
   };
-  
   // section$$.append(TTTscore());
-  section$$.append(scoreBoard());
-  //Game section > turn to play and winner 
+  section$$.append(scoreBoard("X","O",scoreObj.X,scoreObj.O));
+  //Game section > turn to play and winner
   const turno$$ = document.createElement("p");
   turno$$.classList.add("turnTxt");
   turno$$.innerHTML = `Turno de <strong class="turn">X</strong>`;
@@ -84,8 +88,8 @@ const TTTboard = (dim, scoreObj) => {
       const winner = validarGanador(tablero);
       if (winner && !scoreObj.updated) {
         scoreObj.updated = true;
-        console.log(winner);
         scoreObj[winner] += 1;
+        localStorage.setItem("TTTScore",JSON.stringify(scoreObj));
         score(winner, scoreObj[winner]);
         txt.innerHTML = `¡Ganador de la partida <strong class="turn">${winner}</strong>!`;
       }
@@ -95,8 +99,6 @@ const TTTboard = (dim, scoreObj) => {
 
   return tablero;
 };
-
-
 
 const validarGanador = (tablero) => {
   // console.log(tablero)
